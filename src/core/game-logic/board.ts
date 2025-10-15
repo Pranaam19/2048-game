@@ -30,7 +30,9 @@ export const initializeBoard = (size: number, initialTileCount: number = 2): Boa
     const emptyPositions = getEmptyPositions(board);
     if (emptyPositions.length > 0) {
       const randomPos = emptyPositions[Math.floor(Math.random() * emptyPositions.length)];
-      board = setTileValue(board, randomPos.row, randomPos.col, getRandomTileValue());
+      if (randomPos) {
+        board = setTileValue(board, randomPos.row, randomPos.col, getRandomTileValue());
+      }
     }
   }
   
@@ -46,8 +48,10 @@ export const getEmptyPositions = (board: Board): Position[] => {
   const positions: Position[] = [];
   
   for (let row = 0; row < board.length; row++) {
-    for (let col = 0; col < board[row].length; col++) {
-      if (board[row][col] === 0) {
+    const currentRow = board[row];
+    if (!currentRow) continue;
+    for (let col = 0; col < currentRow.length; col++) {
+      if (currentRow[col] === 0) {
         positions.push({ row, col });
       }
     }
@@ -106,8 +110,11 @@ export const areBoardsEqual = (board1: Board, board2: Board): boolean => {
   if (board1.length !== board2.length) return false;
   
   for (let row = 0; row < board1.length; row++) {
-    for (let col = 0; col < board1[row].length; col++) {
-      if (board1[row][col] !== board2[row][col]) {
+    const row1 = board1[row];
+    const row2 = board2[row];
+    if (!row1 || !row2) return false;
+    for (let col = 0; col < row1.length; col++) {
+      if (row1[col] !== row2[col]) {
         return false;
       }
     }

@@ -16,6 +16,10 @@ export const spawnRandomTile = (board: Board): Board => {
   const randomIndex = Math.floor(Math.random() * emptyPositions.length);
   const position = emptyPositions[randomIndex];
   
+  // Safety check (should never happen given the length check above)
+  if (!position) {
+    return board;
+  }
 
   const value = getRandomTileValue();
   
