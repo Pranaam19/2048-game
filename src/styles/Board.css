@@ -1,0 +1,35 @@
+/**
+ * Board component styles.
+ */
+
+.board-container {
+  position: relative;
+  background: var(--board-bg);
+  border-radius: var(--border-radius);
+  padding: var(--gap);
+}
+
+.board {
+  display: grid;
+  gap: var(--gap);
+  position: relative;
+  background: var(--board-bg);
+  border-radius: var(--border-radius);
+}
+
+/* Responsive board sizing */
+@media (min-width: 600px) {
+  .board {
+    width: 500px;
+    height: 500px;
+  }
+}
+
+@media (max-width: 599px) {
+  .board {
+    width: 90vw;
+    height: 90vw;
+    max-width: 500px;
+    max-height: 500px;
+  }
+}

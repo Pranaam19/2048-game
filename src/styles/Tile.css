@@ -1,0 +1,156 @@
+/**
+ * Tile component styles with animations.
+ */
+
+.tile {
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: all var(--transition-speed) ease-in-out;
+  position: relative;
+  animation: appear 0.2s ease-in-out;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tile-value {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  user-select: none;
+}
+
+/* Empty tile */
+.tile-empty {
+  background: var(--empty-cell);
+}
+
+/* Tile colors based on value */
+.tile-2 {
+  background: var(--tile-2);
+  color: var(--text-dark);
+}
+
+.tile-4 {
+  background: var(--tile-4);
+  color: var(--text-dark);
+}
+
+.tile-8 {
+  background: var(--tile-8);
+  color: var(--text-light);
+}
+
+.tile-16 {
+  background: var(--tile-16);
+  color: var(--text-light);
+}
+
+.tile-32 {
+  background: var(--tile-32);
+  color: var(--text-light);
+}
+
+.tile-64 {
+  background: var(--tile-64);
+  color: var(--text-light);
+}
+
+.tile-128 {
+  background: var(--tile-128);
+  color: var(--text-light);
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.4);
+}
+
+.tile-128 .tile-value {
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+}
+
+.tile-256 {
+  background: var(--tile-256);
+  color: var(--text-light);
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.5);
+}
+
+.tile-256 .tile-value {
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+}
+
+.tile-512 {
+  background: var(--tile-512);
+  color: var(--text-light);
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.6);
+}
+
+.tile-512 .tile-value {
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+}
+
+.tile-1024 {
+  background: var(--tile-1024);
+  color: var(--text-light);
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.7);
+}
+
+.tile-1024 .tile-value {
+  font-size: clamp(1rem, 3.5vw, 2rem);
+}
+
+.tile-2048 {
+  background: var(--tile-2048);
+  color: var(--text-light);
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.8);
+  animation: pulse 1s infinite;
+}
+
+.tile-2048 .tile-value {
+  font-size: clamp(1rem, 3.5vw, 2rem);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Super tiles (4096, 8192, etc.) */
+.tile-4096,
+.tile-8192 {
+  background: var(--tile-super);
+  color: var(--text-light);
+  box-shadow: 0 0 30px 10px rgba(60, 58, 50, 0.5);
+}
+
+.tile-4096 .tile-value,
+.tile-8192 .tile-value {
+  font-size: clamp(0.9rem, 3vw, 1.8rem);
+}
+
+/* Merge animation */
+@keyframes merge {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.tile-merged {
+  animation: merge 0.2s ease-in-out;
+}

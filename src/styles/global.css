@@ -1,0 +1,282 @@
+/**
+ * Global styles for the 2048 game application.
+ */
+
+:root {
+  /* Color palette */
+  --bg-color: #faf8ef;
+  --board-bg: #bbada0;
+  --empty-cell: rgba(238, 228, 218, 0.35);
+  --text-dark: #776e65;
+  --text-light: #f9f6f2;
+  
+  /* Tile colors */
+  --tile-2: #eee4da;
+  --tile-4: #ede0c8;
+  --tile-8: #f2b179;
+  --tile-16: #f59563;
+  --tile-32: #f67c5f;
+  --tile-64: #f65e3b;
+  --tile-128: #edcf72;
+  --tile-256: #edcc61;
+  --tile-512: #edc850;
+  --tile-1024: #edc53f;
+  --tile-2048: #edc22e;
+  --tile-super: #3c3a32;
+  
+  /* Spacing */
+  --gap: 15px;
+  --border-radius: 6px;
+  
+  /* Animations */
+  --transition-speed: 0.15s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+}
+
+.game-container {
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+}
+
+/* Controls */
+.controls {
+  margin-bottom: 20px;
+}
+
+.controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.game-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.instructions {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.instructions strong {
+  color: var(--text-dark);
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  font-family: inherit;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-restart {
+  background: #8f7a66;
+  color: var(--text-light);
+}
+
+.btn-restart:hover {
+  background: #9f8a76;
+}
+
+.btn-primary {
+  background: #8f7a66;
+  color: var(--text-light);
+  margin-right: 10px;
+}
+
+.btn-secondary {
+  background: #eee4da;
+  color: var(--text-dark);
+}
+
+/* Score Board */
+.score-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.score-box {
+  background: var(--board-bg);
+  padding: 15px 25px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  flex: 1;
+}
+
+.score-label {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #eee4da;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.score-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* Direction Controls (optional mobile buttons) */
+.direction-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.direction-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-direction {
+  width: 60px;
+  height: 60px;
+  background: #8f7a66;
+  color: var(--text-light);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-radius: var(--border-radius);
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.overlay-content {
+  text-align: center;
+  padding: 40px;
+}
+
+.overlay-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: var(--text-dark);
+}
+
+.overlay-message {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: var(--text-dark);
+}
+
+.overlay-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.overlay-win .overlay-title {
+  color: #f67c5f;
+}
+
+.overlay-lose .overlay-title {
+  color: #8f7a66;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-dark);
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .game-title {
+    font-size: 2.5rem;
+  }
+  
+  .controls-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .overlay-title {
+    font-size: 2rem;
+  }
+  
+  .overlay-message {
+    font-size: 1rem;
+  }
+}
