@@ -1,7 +1,4 @@
-/**
- * Custom React hook for 2048 game state management.
- * Encapsulates all game logic and provides a clean API for components.
- */
+
 
 import { useState, useCallback, useEffect } from 'react';
 import type { GameState, Direction, GameConfig } from '../core/game-logic/types';
@@ -10,90 +7,133 @@ import {
   processMove,
   resetGame,
   continueAfterWin,
+  undo,
+  getElapsedTime,
+  saveGameToStorage,
+  loadGameFromStorage,
 } from '../core/game-logic/game-state';
 import { createKeyboardHandler } from '../utils/keyboard';
+import { getBestMove } from '../core/game-logic/ai-hints';
+import { FEATURE_FLAGS } from '../config/features';
 
-/**
- * Hook return type with game state and control functions.
- */
+
 export interface Use2048Return {
-  // Current game state
   gameState: GameState;
   
-  // Control functions
+  // Core functions
   move: (direction: Direction) => void;
   restart: () => void;
   continueGame: () => void;
   
+  // Interview features (available but hidden by default)
+  undo: () => void;
+  getHint: () => Direction | null;
+  elapsedTime: number;
+  
   // Computed properties
   canContinue: boolean;
+  canUndo: boolean;
 }
 
-/**
- * Custom hook for managing 2048 game state.
- * 
- * @param config - Optional game configuration
- * @returns Game state and control functions
- * 
- * @example
- * const { gameState, move, restart } = use2048({ size: 4 });
- */
-export const use2048 = (config?: Partial<GameConfig>): Use2048Return => {
-  // Initialize game state
-  const [gameState, setGameState] = useState<GameState>(() =>
-    createInitialGameState(config)
-  );
 
-  /**
-   * Handles a move in the specified direction.
-   */
+export const use2048 = (config?: Partial<GameConfig>): Use2048Return => {
+  // Try to load saved game if feature is enabled
+  const [gameState, setGameState] = useState<GameState>(() => {
+    if (FEATURE_FLAGS.enableSaveLoad) {
+      const saved = loadGameFromStorage();
+      if (saved) return saved;
+    }
+    return createInitialGameState(config);
+  });
+  
+  // Timer for elapsed time (updates every second)
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+
   const move = useCallback((direction: Direction) => {
     setGameState(currentState => processMove(currentState, direction));
   }, []);
 
-  /**
-   * Restarts the game with a fresh board.
-   */
+
   const restart = useCallback(() => {
     setGameState(currentState => resetGame(currentState, config));
   }, [config]);
 
-  /**
-   * Continues playing after winning (reaching 2048).
-   */
+
   const continueGame = useCallback(() => {
     setGameState(currentState => continueAfterWin(currentState));
   }, []);
+  
 
-  /**
-   * Sets up keyboard event listeners.
-   */
+  const undoMove = useCallback(() => {
+    setGameState(currentState => undo(currentState));
+  }, []);
+  
+
+  const getHint = useCallback(() => {
+    return getBestMove(gameState.board);
+  }, [gameState.board]);
+
+
   useEffect(() => {
-    const handler = createKeyboardHandler(move);
-    window.addEventListener('keydown', handler);
-    
-    return () => {
-      window.removeEventListener('keydown', handler);
-    };
-  }, [move]);
+    const handler = (event: KeyboardEvent) => {
+     
+      const keyboardHandler = createKeyboardHandler(move);
+      keyboardHandler(event);
+      
 
-  /**
-   * Can continue playing after winning.
-   */
+      if (FEATURE_FLAGS.enableKeyboardShortcuts) {
+        if (event.key.toLowerCase() === 'r') {
+          event.preventDefault();
+          restart();
+        }
+        if (event.key.toLowerCase() === 'u' && FEATURE_FLAGS.enableUndo) {
+          event.preventDefault();
+          undoMove();
+        }
+      }
+    };
+    
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [move, restart, undoMove]);
+  
+  
+  useEffect(() => {
+    if (!FEATURE_FLAGS.enableTimer || gameState.over) return;
+    
+    const interval = setInterval(() => {
+      setElapsedTime(getElapsedTime(gameState));
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [gameState]);
+  
+ 
+  useEffect(() => {
+    if (FEATURE_FLAGS.enableSaveLoad) {
+      saveGameToStorage(gameState);
+    }
+  }, [gameState]);
+
+ 
   const canContinue = gameState.won && !gameState.over;
+  const canUndo = gameState.history.length > 0;
 
   return {
     gameState,
     move,
     restart,
     continueGame,
+    undo: undoMove,
+    getHint,
+    elapsedTime,
     canContinue,
+    canUndo,
   };
 };
 
-/**
- * Hook for managing game state with custom initial state (for testing).
- */
+
 export const use2048WithState = (initialState: GameState): Use2048Return => {
   const [gameState, setGameState] = useState<GameState>(initialState);
 
