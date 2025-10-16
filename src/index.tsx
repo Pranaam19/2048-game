@@ -1,7 +1,3 @@
-/**
- * Application entry point.
- * Bootstraps React application and mounts to DOM.
- */
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

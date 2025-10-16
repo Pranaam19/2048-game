@@ -1,6 +1,4 @@
-/**
- * ScoreBoard component - displays current score and best score.
- */
+
 
 import React from 'react';
 
@@ -9,9 +7,7 @@ export interface ScoreBoardProps {
   bestScore: number;
 }
 
-/**
- * Displays the current score and best score.
- */
+
 export const ScoreBoard: React.FC<ScoreBoardProps> = ({ score, bestScore }) => {
   return (
     <div className="score-container">

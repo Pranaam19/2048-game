@@ -26,6 +26,11 @@ export const createInitialGameState = (
     over: false,
     size: fullConfig.size,
     hasSeenWinMessage: false,
+    
+    moveCount: 0,
+    history: [],
+    startTime: Date.now(),
+    combo: 0,
   };
 };
 
@@ -62,6 +67,17 @@ export const processMove = (state: GameState, direction: Direction): GameState =
     saveBestScore(newBestScore);
   }
   
+  
+  const newMoveCount = moveResult.moved ? state.moveCount + 1 : state.moveCount;
+  
+  
+  const newCombo = moveResult.scoreGain > 0 ? state.combo + 1 : 0;
+  
+ 
+  const newHistory = moveResult.moved 
+    ? [...state.history, state].slice(-10)
+    : state.history;
+  
   return {
     board: boardWithNewTile,
     score: newScore,
@@ -70,6 +86,11 @@ export const processMove = (state: GameState, direction: Direction): GameState =
     over,
     size: state.size,
     hasSeenWinMessage,
+   
+    moveCount: newMoveCount,
+    history: newHistory,
+    startTime: state.startTime,
+    combo: newCombo,
   };
 };
 
@@ -81,7 +102,7 @@ export const resetGame = (
   const newState = createInitialGameState(config);
   return {
     ...newState,
-    bestScore: currentState.bestScore, // Preserve best score
+    bestScore: currentState.bestScore, 
   };
 };
 
@@ -124,4 +145,99 @@ export const continueAfterWin = (state: GameState): GameState => {
     won: false,
     hasSeenWinMessage: true,
   };
+};
+
+
+export const undo = (state: GameState): GameState => {
+  if (state.history.length === 0) {
+    return state; 
+  }
+  
+
+  const previousState = state.history[state.history.length - 1]!;
+  
+
+  const newHistory = state.history.slice(0, -1);
+  
+  return {
+    board: previousState.board,
+    score: previousState.score,
+    bestScore: state.bestScore, // Preserve best score
+    won: previousState.won,
+    over: previousState.over,
+    size: previousState.size,
+    hasSeenWinMessage: previousState.hasSeenWinMessage,
+    moveCount: previousState.moveCount,
+    history: newHistory,
+    startTime: previousState.startTime,
+    combo: previousState.combo,
+  };
+};
+
+
+export const getElapsedTime = (state: GameState): number => {
+  return Math.floor((Date.now() - state.startTime) / 1000);
+};
+
+
+export const formatTime = (seconds: number): string => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
+
+export const getComboMultiplier = (combo: number): number => {
+  return Math.min(1 + combo * 0.1, 3);
+};
+
+
+const GAME_STATE_KEY = '2048-current-game';
+
+export const saveGameToStorage = (state: GameState): void => {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    
+    const stateToSave = {
+      ...state,
+      history: [], 
+    };
+    localStorage.setItem(GAME_STATE_KEY, JSON.stringify(stateToSave));
+  } catch (e) {
+    console.error('Failed to save game state', e);
+  }
+};
+
+export const loadGameFromStorage = (): GameState | null => {
+  if (typeof window === 'undefined') return null;
+  
+  try {
+    const saved = localStorage.getItem(GAME_STATE_KEY);
+    if (!saved) return null;
+    
+    const state = JSON.parse(saved);
+    
+    if (state.board && state.score !== undefined) {
+      return {
+        ...state,
+        history: [], 
+        startTime: Date.now(), 
+      };
+    }
+    return null;
+  } catch (e) {
+    console.error('Failed to load game state', e);
+    return null;
+  }
+};
+
+export const clearSavedGame = (): void => {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    localStorage.removeItem(GAME_STATE_KEY);
+  } catch (e) {
+    console.error('Failed to clear saved game', e);
+  }
 };
