@@ -107,6 +107,17 @@ export const resetGame = (
 };
 
 
+export const hardResetGame = (config?: Partial<GameConfig>): GameState => {
+  
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('2048-best-score');
+  }
+  
+  
+  return createInitialGameState(config);
+};
+
+
 export const isGameWon = (board: Board): boolean => {
   return hasTileValue(board, 2048);
 };

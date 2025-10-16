@@ -5,18 +5,26 @@ import { Direction } from '../../core/game-logic/types';
 
 export interface ControlsProps {
   onRestart: () => void;
+  onHardReset?: () => void;
   onMove?: (direction: Direction) => void;
 }
 
 
-export const Controls: React.FC<ControlsProps> = ({ onRestart, onMove }) => {
+export const Controls: React.FC<ControlsProps> = ({ onRestart, onHardReset, onMove }) => {
   return (
     <div className="controls">
       <div className="controls-header">
         <h1 className="game-title">2048</h1>
-        <button className="btn btn-restart" onClick={onRestart}>
-          New Game
-        </button>
+        <div className="button-group">
+          <button className="btn btn-restart" onClick={onRestart}>
+            New Game
+          </button>
+          {onHardReset && (
+            <button className="btn btn-secondary" onClick={onHardReset} title="Clear best score and restart">
+              Reset
+            </button>
+          )}
+        </div>
       </div>
       
       <div className="instructions">

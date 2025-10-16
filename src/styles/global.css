@@ -127,6 +127,17 @@ body {
   color: var(--text-light);
 }
 
+.btn-secondary {
+  background: #bbada0;
+  color: var(--text-light);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .btn-restart:hover {
   background: #9f8a76;
 }

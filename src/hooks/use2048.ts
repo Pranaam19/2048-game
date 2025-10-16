@@ -6,6 +6,7 @@ import {
   createInitialGameState,
   processMove,
   resetGame,
+  hardResetGame,
   continueAfterWin,
   undo,
   getElapsedTime,
@@ -20,24 +21,25 @@ import { FEATURE_FLAGS } from '../config/features';
 export interface Use2048Return {
   gameState: GameState;
   
-  // Core functions
+  
   move: (direction: Direction) => void;
   restart: () => void;
+  hardReset: () => void;
   continueGame: () => void;
   
-  // Interview features (available but hidden by default)
+  
   undo: () => void;
   getHint: () => Direction | null;
   elapsedTime: number;
   
-  // Computed properties
+  
   canContinue: boolean;
   canUndo: boolean;
 }
 
 
 export const use2048 = (config?: Partial<GameConfig>): Use2048Return => {
-  // Try to load saved game if feature is enabled
+  /
   const [gameState, setGameState] = useState<GameState>(() => {
     if (FEATURE_FLAGS.enableSaveLoad) {
       const saved = loadGameFromStorage();
@@ -46,7 +48,7 @@ export const use2048 = (config?: Partial<GameConfig>): Use2048Return => {
     return createInitialGameState(config);
   });
   
-  // Timer for elapsed time (updates every second)
+ 
   const [elapsedTime, setElapsedTime] = useState(0);
 
 
@@ -59,6 +61,9 @@ export const use2048 = (config?: Partial<GameConfig>): Use2048Return => {
     setGameState(currentState => resetGame(currentState, config));
   }, [config]);
 
+  const hardReset = useCallback(() => {
+    setGameState(() => hardResetGame(config));
+  }, [config]);
 
   const continueGame = useCallback(() => {
     setGameState(currentState => continueAfterWin(currentState));
@@ -124,6 +129,7 @@ export const use2048 = (config?: Partial<GameConfig>): Use2048Return => {
     gameState,
     move,
     restart,
+    hardReset,
     continueGame,
     undo: undoMove,
     getHint,
@@ -148,6 +154,10 @@ export const use2048WithState = (initialState: GameState): Use2048Return => {
 
   const continueGame = useCallback(() => {
     setGameState(currentState => continueAfterWin(currentState));
+  }, []);
+
+  const hardReset = useCallback(() => {
+    setGameState(() => hardResetGame());
   }, []);
 
   const undoMove = useCallback(() => {
@@ -184,6 +194,7 @@ export const use2048WithState = (initialState: GameState): Use2048Return => {
     gameState,
     move,
     restart,
+    hardReset,
     continueGame,
     undo: undoMove,
     getHint,

@@ -10,7 +10,7 @@ import './styles/global.css';
 
 const App: React.FC = () => {
   
-  const { gameState, restart, continueGame, canContinue } = use2048({
+  const { gameState, restart, hardReset, continueGame, canContinue } = use2048({
     size: 4,
     winningTile: 2048,
     initialTiles: 2,
@@ -19,7 +19,7 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <div className="game-container">
-        <Controls onRestart={restart} />
+        <Controls onRestart={restart} onHardReset={hardReset} />
 
 
         <ScoreBoard score={gameState.score} bestScore={gameState.bestScore} />
