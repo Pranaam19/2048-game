@@ -39,7 +39,7 @@ export interface Use2048Return {
 
 
 export const use2048 = (config?: Partial<GameConfig>): Use2048Return => {
-  /
+  
   const [gameState, setGameState] = useState<GameState>(() => {
     if (FEATURE_FLAGS.enableSaveLoad) {
       const saved = loadGameFromStorage();
