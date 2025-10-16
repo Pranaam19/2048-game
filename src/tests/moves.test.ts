@@ -20,8 +20,8 @@ describe('Move Operations', () => {
       board = setTileValue(board, 0, 3, 4);
       
       const result = moveLeft(board);
-      expect(result.newBoard[0][0]).toBe(2);
-      expect(result.newBoard[0][1]).toBe(4);
+      expect(result.newBoard[0]?.[0]).toBe(2);
+      expect(result.newBoard[0]?.[1]).toBe(4);
       expect(result.moved).toBe(true);
     });
 
@@ -31,7 +31,7 @@ describe('Move Operations', () => {
       board = setTileValue(board, 0, 1, 2);
       
       const result = moveLeft(board);
-      expect(result.newBoard[0][0]).toBe(4);
+      expect(result.newBoard[0]?.[0]).toBe(4);
       expect(result.scoreGain).toBe(4);
       expect(result.moved).toBe(true);
     });
@@ -54,8 +54,8 @@ describe('Move Operations', () => {
       board = setTileValue(board, 0, 1, 4);
       
       const result = moveRight(board);
-      expect(result.newBoard[0][3]).toBe(4);
-      expect(result.newBoard[0][2]).toBe(2);
+      expect(result.newBoard[0]?.[3]).toBe(4);
+      expect(result.newBoard[0]?.[2]).toBe(2);
       expect(result.moved).toBe(true);
     });
 
@@ -65,7 +65,7 @@ describe('Move Operations', () => {
       board = setTileValue(board, 0, 3, 2);
       
       const result = moveRight(board);
-      expect(result.newBoard[0][3]).toBe(4);
+      expect(result.newBoard[0]?.[3]).toBe(4);
       expect(result.scoreGain).toBe(4);
     });
   });
@@ -77,8 +77,8 @@ describe('Move Operations', () => {
       board = setTileValue(board, 3, 0, 4);
       
       const result = moveUp(board);
-      expect(result.newBoard[0][0]).toBe(2);
-      expect(result.newBoard[1][0]).toBe(4);
+      expect(result.newBoard[0]?.[0]).toBe(2);
+      expect(result.newBoard[1]?.[0]).toBe(4);
       expect(result.moved).toBe(true);
     });
 
@@ -88,7 +88,7 @@ describe('Move Operations', () => {
       board = setTileValue(board, 1, 0, 2);
       
       const result = moveUp(board);
-      expect(result.newBoard[0][0]).toBe(4);
+      expect(result.newBoard[0]?.[0]).toBe(4);
       expect(result.scoreGain).toBe(4);
     });
   });
@@ -100,8 +100,8 @@ describe('Move Operations', () => {
       board = setTileValue(board, 1, 0, 4);
       
       const result = moveDown(board);
-      expect(result.newBoard[3][0]).toBe(4);
-      expect(result.newBoard[2][0]).toBe(2);
+      expect(result.newBoard[3]?.[0]).toBe(4);
+      expect(result.newBoard[2]?.[0]).toBe(2);
       expect(result.moved).toBe(true);
     });
 
@@ -111,7 +111,7 @@ describe('Move Operations', () => {
       board = setTileValue(board, 3, 0, 2);
       
       const result = moveDown(board);
-      expect(result.newBoard[3][0]).toBe(4);
+      expect(result.newBoard[3]?.[0]).toBe(4);
       expect(result.scoreGain).toBe(4);
     });
   });
@@ -123,8 +123,8 @@ describe('Move Operations', () => {
       board = setTileValue(board, 1, 0, 4);
       
       const transposed = transposeBoard(board);
-      expect(transposed[1][0]).toBe(2);
-      expect(transposed[0][1]).toBe(4);
+      expect(transposed[1]?.[0]).toBe(2);
+      expect(transposed[0]?.[1]).toBe(4);
     });
 
     it('should be reversible', () => {
@@ -194,8 +194,8 @@ describe('Move Operations', () => {
       board = setTileValue(board, 1, 3, 4);
       
       const result = moveLeft(board);
-      expect(result.newBoard[0][0]).toBe(4);
-      expect(result.newBoard[1][0]).toBe(8);
+      expect(result.newBoard[0]?.[0]).toBe(4);
+      expect(result.newBoard[1]?.[0]).toBe(8);
       expect(result.scoreGain).toBe(12);
     });
   });

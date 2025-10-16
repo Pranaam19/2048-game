@@ -136,6 +136,7 @@ export const use2048 = (config?: Partial<GameConfig>): Use2048Return => {
 
 export const use2048WithState = (initialState: GameState): Use2048Return => {
   const [gameState, setGameState] = useState<GameState>(initialState);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   const move = useCallback((direction: Direction) => {
     setGameState(currentState => processMove(currentState, direction));
@@ -149,6 +150,14 @@ export const use2048WithState = (initialState: GameState): Use2048Return => {
     setGameState(currentState => continueAfterWin(currentState));
   }, []);
 
+  const undoMove = useCallback(() => {
+    setGameState(currentState => undo(currentState));
+  }, []);
+
+  const getHint = useCallback(() => {
+    return getBestMove(gameState.board);
+  }, [gameState.board]);
+
   useEffect(() => {
     const handler = createKeyboardHandler(move);
     window.addEventListener('keydown', handler);
@@ -158,13 +167,28 @@ export const use2048WithState = (initialState: GameState): Use2048Return => {
     };
   }, [move]);
 
+  useEffect(() => {
+    if (gameState.over) return;
+    
+    const interval = setInterval(() => {
+      setElapsedTime(getElapsedTime(gameState));
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [gameState]);
+
   const canContinue = gameState.won && !gameState.over;
+  const canUndo = gameState.history.length > 0;
 
   return {
     gameState,
     move,
     restart,
     continueGame,
+    undo: undoMove,
+    getHint,
+    elapsedTime,
     canContinue,
+    canUndo,
   };
 };

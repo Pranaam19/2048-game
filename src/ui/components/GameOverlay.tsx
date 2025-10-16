@@ -1,7 +1,4 @@
-/**
- * GameOverlay component - displays win/lose messages.
- * Shows overlay when game is won or lost with appropriate actions.
- */
+
 
 import React from 'react';
 
@@ -13,9 +10,7 @@ export interface GameOverlayProps {
   onContinue?: () => void;
 }
 
-/**
- * Overlay component for game end states (win/lose).
- */
+
 export const GameOverlay: React.FC<GameOverlayProps> = ({
   isWon,
   isOver,
@@ -23,12 +18,12 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
   onRestart,
   onContinue,
 }) => {
-  // Don't show overlay if game is still in progress
+
   if (!isWon && !isOver) {
     return null;
   }
 
-  // Show win overlay
+  
   if (isWon && !isOver) {
     return (
       <div className="overlay overlay-win">
@@ -52,7 +47,6 @@ export const GameOverlay: React.FC<GameOverlayProps> = ({
     );
   }
 
-  // Show game over overlay
   if (isOver) {
     return (
       <div className="overlay overlay-lose">

@@ -1,7 +1,4 @@
-/**
- * BoardView component - renders the game board grid.
- * Displays all tiles in a grid layout.
- */
+
 
 import React from 'react';
 import type { Board, TileValue } from '../../core/game-logic/types';
@@ -13,9 +10,7 @@ export interface BoardViewProps {
   size: number;
 }
 
-/**
- * Main board component that renders the game grid.
- */
+
 export const BoardView: React.FC<BoardViewProps> = ({ board, size }) => {
   if (!board || !Array.isArray(board)) {
     return <div className="board-container">Loading...</div>;
