@@ -85,15 +85,15 @@ describe('Board Operations', () => {
       const board = createEmptyBoard(4);
       const newBoard = setTileValue(board, 0, 0, 2);
       
-      expect(board[0][0]).toBe(0); // Original unchanged
-      expect(newBoard[0][0]).toBe(2); // New board updated
+      expect(board[0]?.[0]).toBe(0); 
+      expect(newBoard[0]?.[0]).toBe(2); 
     });
 
     it('should only change the specified cell', () => {
       const board = createEmptyBoard(4);
       const newBoard = setTileValue(board, 2, 3, 4);
       
-      expect(newBoard[2][3]).toBe(4);
+      expect(newBoard[2]?.[3]).toBe(4);
       expect(getEmptyPositions(newBoard)).toHaveLength(15);
     });
   });

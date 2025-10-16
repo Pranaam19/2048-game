@@ -1,6 +1,6 @@
 
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   createInitialGameState,
   processMove,
@@ -58,7 +58,7 @@ describe('Game State Management', () => {
       };
       
       const newState = processMove(state, Direction.LEFT);
-      expect(newState.board[0][0]).toBe(2);
+      expect(newState.board[0]?.[0]).toBe(2);
     });
 
     it('should increase score on merge', () => {
@@ -157,23 +157,45 @@ describe('Game State Management', () => {
     });
 
     it('should return true when no moves possible', () => {
-      const board = [
-        [2, 4, 2, 4],
-        [4, 2, 4, 2],
-        [2, 4, 2, 4],
-        [4, 2, 4, 2],
-      ];
+      let board = createEmptyBoard(4);
+      board = setTileValue(board, 0, 0, 2);
+      board = setTileValue(board, 0, 1, 4);
+      board = setTileValue(board, 0, 2, 2);
+      board = setTileValue(board, 0, 3, 4);
+      board = setTileValue(board, 1, 0, 4);
+      board = setTileValue(board, 1, 1, 2);
+      board = setTileValue(board, 1, 2, 4);
+      board = setTileValue(board, 1, 3, 2);
+      board = setTileValue(board, 2, 0, 2);
+      board = setTileValue(board, 2, 1, 4);
+      board = setTileValue(board, 2, 2, 2);
+      board = setTileValue(board, 2, 3, 4);
+      board = setTileValue(board, 3, 0, 4);
+      board = setTileValue(board, 3, 1, 2);
+      board = setTileValue(board, 3, 2, 4);
+      board = setTileValue(board, 3, 3, 2);
       
       expect(isGameOver(board)).toBe(true);
     });
 
     it('should return false when merges are possible', () => {
-      const board = [
-        [2, 2, 4, 8],
-        [4, 8, 16, 32],
-        [8, 16, 32, 64],
-        [16, 32, 64, 128],
-      ];
+      let board = createEmptyBoard(4);
+      board = setTileValue(board, 0, 0, 2);
+      board = setTileValue(board, 0, 1, 2);
+      board = setTileValue(board, 0, 2, 4);
+      board = setTileValue(board, 0, 3, 8);
+      board = setTileValue(board, 1, 0, 4);
+      board = setTileValue(board, 1, 1, 8);
+      board = setTileValue(board, 1, 2, 16);
+      board = setTileValue(board, 1, 3, 32);
+      board = setTileValue(board, 2, 0, 8);
+      board = setTileValue(board, 2, 1, 16);
+      board = setTileValue(board, 2, 2, 32);
+      board = setTileValue(board, 2, 3, 64);
+      board = setTileValue(board, 3, 0, 16);
+      board = setTileValue(board, 3, 1, 32);
+      board = setTileValue(board, 3, 2, 64);
+      board = setTileValue(board, 3, 3, 128);
       
       expect(isGameOver(board)).toBe(false);
     });
