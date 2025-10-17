@@ -68,6 +68,9 @@ body {
   max-width: 500px;
   width: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 /* Controls */
@@ -182,18 +185,20 @@ body {
   color: white;
 }
 
-/* Direction Controls (optional mobile buttons) */
+/* Direction Controls - Below the board, mobile only */
 .direction-controls {
-  display: flex;
+  display: none; /* Hidden on desktop */
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
+  width: 100%;
 }
 
 .direction-row {
   display: flex;
   gap: 10px;
+  justify-content: center;
 }
 
 .btn-direction {
@@ -205,6 +210,36 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  font-weight: bold;
+}
+
+.btn-direction:active {
+  background: #9f8a76;
+  transform: scale(0.95);
+}
+
+/* Show direction controls ONLY on mobile */
+@media (max-width: 768px) {
+  .direction-controls {
+    display: flex;
+  }
+  
+  .game-container {
+    touch-action: none;
+    user-select: none;
+  }
+}
+
+/* Hide direction controls on desktop */
+@media (min-width: 769px) {
+  .direction-controls {
+    display: none !important;
+  }
 }
 
 /* Overlay */
