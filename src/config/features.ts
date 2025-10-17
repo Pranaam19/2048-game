@@ -18,7 +18,7 @@ export const FEATURE_FLAGS: FeatureFlags = {
   enableTimer: false,
   enableCombo: false,
   enableHints: false,
-  enableKeyboardShortcuts: false,
+  enableKeyboardShortcuts: true,
   enableAnimations: false,
   enableSaveLoad: false,
 };

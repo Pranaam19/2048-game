@@ -8,7 +8,7 @@ export interface ScoreBoardProps {
 }
 
 
-export const ScoreBoard: React.FC<ScoreBoardProps> = ({ score, bestScore }) => {
+export const ScoreBoard: React.FC<ScoreBoardProps> = ({ score, bestScore  }) => {
   return (
     <div className="score-container">
       <div className="score-box">
@@ -20,6 +20,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({ score, bestScore }) => {
         <div className="score-value">{bestScore}</div>
       </div>
     </div>
+    
   );
 };
 

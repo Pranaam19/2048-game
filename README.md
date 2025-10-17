@@ -134,6 +134,23 @@ npm run test:ui
 
 5. **Restart**: Click "New Game" to start over at any time.
 
+## 📱 Mobile Responsiveness
+
+The game is fully optimized for mobile devices:
+
+- **Touch Gestures**: Swipe in any direction to move tiles (mobile only)
+- **On-Screen Controls**: Directional buttons appear below the board on mobile devices
+- **Responsive Layout**: Adapts to all screen sizes (desktop, tablet, mobile)
+- **Landscape Support**: Optimized layout for landscape orientation
+- **Touch-Friendly**: All buttons meet minimum touch target size (44px)
+- **Performance**: Passive event listeners for smooth scrolling and gestures
+
+### Mobile-Specific Features
+- Touch gestures only activate on screens ≤ 768px wide
+- Direction buttons automatically show/hide based on screen size
+- Optimized board sizing for different viewports
+- Instructions and footer adapt to available space
+
 ## 🏗️ Architecture & Design
 
 ### Functional Programming Principles
